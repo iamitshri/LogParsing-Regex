@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class ExtractDmLog {
+public class TestRegex {
 
 	public static void test() {
 
@@ -27,25 +24,22 @@ public class ExtractDmLog {
 			}
 		}
 	}
-	
+
 	static String readFile(String fileName) throws IOException {
 		Path path = Paths.get("/Users/amit.shrigondekar/logs/6-5", fileName);
 		String str = new String(Files.readAllBytes(path));
 		return str;
 	}
-	
-	public static void extractCombined() throws IOException {
-		 
-		String file = readFile("sample-test.log");
 
-	 
+	public static void extractCombined() throws IOException {
+
+		String file = readFile("sample-test.log");
 
 		final String regex1 = "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+).*?NotificationService.sendAssessment\\(\\) sending to Dream Catcher:((.|\n)*?)\\d{4}-\\d{2}-\\d{2}";
 		final String regex2 = "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+).*?NotificationService.sendToDreamCatcher\\(\\): Finished processing.*?submissionId:(.*)?,\\sstatus:\\s(-?\\d+)$";
-		final Pattern pattern = Pattern.compile(regex1+"|"+regex2, Pattern.MULTILINE );
+		final Pattern pattern = Pattern.compile(regex1 + "|" + regex2, Pattern.MULTILINE);
 		Matcher matcher = pattern.matcher(file);
 		while (matcher.find()) {
-			 
 
 			System.out.println("Full match: " + matcher.group(0));
 			for (int i = 1; i <= matcher.groupCount(); i++) {
@@ -54,24 +48,14 @@ public class ExtractDmLog {
 		}
 
 	}
-	
+
 	public static void extractAssessmentModelsSent() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
 		String file = readFile("sample-test.1.log");
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-
 		final String regex = "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+).*?NotificationService.sendAssessment\\(\\) sending to Dream Catcher:((.|\n)*?)\\d{4}-\\d{2}-\\d{2}";
-		final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE );
+		final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 		Matcher matcher = pattern.matcher(file);
 		while (matcher.find()) {
-			/*
-			 * String dateOfLogEntry = matcher.group(1); LocalDateTime dateTimeofLog =
-			 * LocalDateTime.parse(dateOfLogEntry, formatter);
-			 * System.out.println(" dateOfLogEntry: " + dateTimeofLog); AssessmentModel
-			 * asmtModel = mapper.readValue(matcher.group(2), AssessmentModel.class);
-			 * System.out.println(""+mapper.writeValueAsString(asmtModel));
-			 */
 
 			System.out.println("Full match: " + matcher.group(0));
 			for (int i = 1; i <= matcher.groupCount(); i++) {
@@ -80,13 +64,13 @@ public class ExtractDmLog {
 		}
 
 	}
-	
+
 	public static void extractFinishedProcessingMsgs() throws IOException {
 
 		final String regex = "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+).*?NotificationService.sendToDreamCatcher\\(\\): Finished processing.*?submissionId:(.*)?,\\sstatus:\\s(-?\\d+)$";
 		String string = "2018-06-05 21:50:42.504 DEBUG 4659 --- [nio-8274-exec-9] e.w.d.service.NotificationService        : NotificationService.sendToDreamCatcher(): Finished processing for studentId: QA0000001, assessment: MLT2, taskId: 21aa2b4b-3e07-4ba9-b13f-f3e28da6d2ae, submissionId: 405b7303-2696-49c5-9934-583a9e972528, status: -2\n";
 		String fileString = readFile("sample-test.log");
-		final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE );
+		final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 		final Matcher matcher = pattern.matcher(fileString);
 
 		while (matcher.find()) {
@@ -96,7 +80,7 @@ public class ExtractDmLog {
 			}
 		}
 	}
-	
+
 	void testMatch() {
 		final String regex = "NotificationService.sendToAssessmentToRabbit.*?sending to Rabbit:(.*?)\\d{4}-\\d{2}-\\d{2}";
 		final String string = "2018-06-04 16:55:37.593 DEBUG 3246 --- [nio-8274-exec-9] e.w.d.service.NotificationService        : NotificationService.sendToAssessmentToRabbit() sending to Rabbit: {\n"
@@ -156,10 +140,10 @@ public class ExtractDmLog {
 		}
 
 	}
-	
+
 	public static void main(String[] args) throws IOException {
-	//	extractFinishedProcessingMsgs();
-	//	extractAssessmentModelsSent();
+		// extractFinishedProcessingMsgs();
+		// extractAssessmentModelsSent();
 		extractCombined();
 	}
 }
