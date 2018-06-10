@@ -26,7 +26,7 @@ public class TestRegex {
 	}
 
 	static String readFile(String fileName) throws IOException {
-		Path path = Paths.get("/Users/amit.shrigondekar/logs/6-5", fileName);
+		Path path = Paths.get("filepath", fileName);
 		String str = new String(Files.readAllBytes(path));
 		return str;
 	}

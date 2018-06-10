@@ -101,7 +101,7 @@ public class LogparserApplication implements CommandLineRunner {
 			}
 		}
 
-		writeExcel(logModels, "/Users/amit.shrigondekar/logs/excels", fileName + "-excel-file-");
+		writeExcel(logModels, "filepath/logs/excels", fileName + "-excel-file-");
 
 	}
 
@@ -149,7 +149,7 @@ public class LogparserApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		extractAssessmentModelsSent("combined-6-6.log", "/Users/amit.shrigondekar/logs/6-6/");
+		extractAssessmentModelsSent("combined-6-6.log", "filepath");
 
 	}
 
